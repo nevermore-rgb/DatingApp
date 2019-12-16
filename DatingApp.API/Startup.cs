@@ -34,6 +34,7 @@ namespace DatingApp.API
             services.AddControllers();
             services.AddCors();      
             services.AddScoped<IAuthRepository, AuthRepository>();
+            //Adding Token validiation/ Authentications Lec.36 Auth Middleware
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options => {
                     options.TokenValidationParameters = new TokenValidationParameters
@@ -41,8 +42,10 @@ namespace DatingApp.API
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII
                             .GetBytes(Configuration.GetSection("AppSettings:Token").Value)),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
+                                //we are the issuer (Host)
+                                ValidateIssuer = false,
+                                //we are the Audience (Host)
+                                ValidateAudience = false
                     };
                 });
                             
